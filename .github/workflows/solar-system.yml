@@ -16,7 +16,9 @@ jobs:
         strategy:
             matrix:
                 nodejs_version: [18, 19, 20]
-                operating_system: [ubuntu-latest, macos-latest]
+                operating_system: [ubuntu-latest]
+                #operating_system: [ubuntu-latest, macos-latest]
+
                 exclude:
                     - nodejs_version: 18
                       operating_system: macos-latest 
@@ -105,3 +107,10 @@ jobs:
 
              echo Testing Image URL using wget
              wget -q -O - 127.0.0.1:3000/live | grep live
+
+        - name: Docker push
+          uses: docker/build-push-action@v5
+          with:
+              context: .
+              push: true
+              tags: ${{ vars.DOCKERHUB_USERNAME }}/solar-system:${{ github.sha }}
