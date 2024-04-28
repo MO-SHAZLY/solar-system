@@ -75,6 +75,8 @@ jobs:
     docker:
       name: containerization
       needs: [code-coverage,unit-testing]
+      permissions:
+        packages: write
       runs-on: ubuntu-latest
       steps:
         - name: checkout
@@ -86,7 +88,7 @@ jobs:
             username: ${{ vars.DOCKERHUB_USERNAME }}
             password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-        - name: docker login
+        - name: GHCR login
           uses: docker/login-action@v2.2.0
           with:
             registry: ghcr.io
